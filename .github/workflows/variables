@@ -1,7 +1,6 @@
-name: Combined Workflow with Environment Variables
+name: Workflow with Environment Variables on Ubuntu
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 # Set environment variables for the entire workflow
 env:
