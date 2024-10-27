@@ -1,31 +1,35 @@
-name: Matrix Test Workflow
+name: Example Workflow
 
 on:
   push:
     branches:
       - main
-  pull_request:
+
+  workflow_dispatch:
 
 jobs:
-  test_matrix:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]  # Define OS options
-        node-version: [16, 18]                     # Define Node.js versions
-
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
+      - name: Checkout code
         uses: actions/checkout@v2
+      - name: Run build
+        run: echo "Building the project..."
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+  test:
+    needs: build  # This job will only run after the 'build' job completes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: echo "Running tests..."
 
-      - name: Run Command
-        run: |
-          echo "Running on OS: ${{ matrix.os }} with Node.js version: ${{ matrix.node-version }}"
-          # Replace the following with your command
-          node --version
+  deploy:
+    needs: test  # This job will only run after the 'test' job completes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy
+        run: echo "Deploying the project..."
