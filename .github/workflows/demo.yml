@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]  # Define OS options
-        node-version: [12, 14, 16, 18]                     # Define Node.js versions
+        node-version: [16, 18]                     # Define Node.js versions
 
     steps:
       - name: Check out the repository
