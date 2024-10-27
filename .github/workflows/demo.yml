@@ -1,38 +1,31 @@
-name: Install Git on Multiple OS
+name: Matrix Test Workflow
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  install_git:
+  test_matrix:
     runs-on: ${{ matrix.os }}
-    
-    # Define a matrix strategy for multiple operating systems and versions
+
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]  # Define OS options
+        node-version: [12, 14, 16, 18]                     # Define Node.js versions
 
     steps:
-      - name: Set up environment
-        run: echo "Setting up on ${{ matrix.os }}"
+      - name: Check out the repository
+        uses: actions/checkout@v2
 
-      # Step to install Git on Ubuntu
-      - name: Install Git on Ubuntu
-        if: matrix.os == 'ubuntu-latest'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Run Command
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git
-
-      # Step to install Git on Windows
-      - name: Install Git on Windows
-        if: matrix.os == 'windows-latest'
-        run: |
-          choco install git -y
-
-      # Step to install Git on macOS
-      - name: Install Git on macOS
-        if: matrix.os == 'macos-latest'
-        run: |
-          brew install git
-
-      - name: Verify Git installation
-        run: git --version
+          echo "Running on OS: ${{ matrix.os }} with Node.js version: ${{ matrix.node-version }}"
+          # Replace the following with your command
+          node --version
